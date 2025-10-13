@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('./layouts/header') %>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <%- include('./layouts/sidebar') %>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <%- include('./layouts/topbar') %>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h2>Edit Job</h2>
+                    <% if (message && message.length > 0) { %>
+                        <div class="alert alert-info"><%= message %></div>
+                    <% } %>
+
+                    <!-- Job Edit Form -->
+                    <form action="/jobs/update/<%= job._id %>" method="POST" enctype="multipart/form-data">
+                        <div class="form-group mb-3">
+                            <label for="title">Job Title</label>
+                            <input type="text" name="title" id="title" class="form-control" value="<%= job.title %>">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="description">Description</label>
+                            <textarea name="description" id="description" rows="4" class="form-control"><%= job.description %></textarea>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="skills">Skills (comma separated)</label>
+                            <input type="text" name="skills" id="skills" class="form-control" value="<%= job.skills ? job.skills.join(', ') : '' %>">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="budget">Budget ($)</label>
+                            <input type="number" name="budget" id="budget" class="form-control" value="<%= job.budget %>">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="deadline">Deadline</label>
+                            <input type="date" name="deadline" id="deadline" class="form-control" value="<%= job.deadline.toISOString().split('T')[0] %>">
+                        </div>
+
+                        <!-- Image Upload Field -->
+                        <div class="form-group mb-3">
+                            <label for="image" class="form-label">Change Image</label>
+                                    <input type="file" class="form-control" id="image" name="image" value="<%= job.image %>" accept="image/*">
+                                    <img src="<%=job.image%>" alt="" height="100px" width="100px">
+                        </div>
+
+                        <!-- Status Dropdown -->
+                        <div class="form-group mb-3">
+                            <label for="status">Status</label>
+                            <select name="status" id="status" class="form-control">
+                                <option value="open" <%= job.status === "open" ? "selected" : "" %>>Open</option>
+                                <option value="in_progress" <%= job.status === "in_progress" ? "selected" : "" %>>In Progress</option>
+                                <option value="completed" <%= job.status === "completed" ? "selected" : "" %>>Completed</option>
+                                <option value="closed" <%= job.status === "closed" ? "selected" : "" %>>Closed</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Update Job</button>
+                    </form>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <%- include('./layouts/footer') %>
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+</body>
+
+</html>

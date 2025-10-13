@@ -1,0 +1,47 @@
+<!doctype html>
+<!--
+	Solution by GetTemplates.co
+	URL: https://gettemplates.co
+-->
+<html lang="en">
+
+<%-include('./layouts/header')%>
+
+    <body>
+        <%-include('./layouts/navber')%>
+            <!-- Features Section -->
+<div class="container-fluid gtco-feature" id="features"
+  style="margin-bottom: 150px;  padding-bottom: 50px;">
+  <div class="container">
+    <div class="row mb-5 text-center">
+      <div class="col-12">
+        <h2 class="fw-bold">Our Features</h2>
+        <p class="text-muted">
+          Discover the tools and features that make WorkNestly the best platform for freelancers and clients.
+        </p>
+      </div>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      <% 
+        const icons = ['fa fa-user', 'fa fa-briefcase', 'fa fa-comments', 'fa fa-tasks'];
+      %>
+      <% features.forEach((feature, index) => { %>
+      <div class="col-md-3">
+        <div class="card h-100 text-center border-0 feature-card">
+          <div class="card-body p-4">
+            <i class="<%= icons[index % icons.length] %> fa-3x mb-3 text-primary feature-icon"></i>
+            <h5 class="card-title fw-bold"><%= feature.title %></h5>
+            <p class="card-text text-muted"><%= feature.content %></p>
+          </div>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+</div>
+
+    <%-include('./layouts/footer')%>
+    </body>
+
+</html>

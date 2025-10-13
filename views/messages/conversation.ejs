@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat with <%= otherUser.name %></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: #f2f4f7;
+      font-family: "Poppins", sans-serif;
+    }
+
+    .chat-card {
+      border-radius: 20px;
+      overflow: hidden;
+      background: #fff;
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      background: linear-gradient(135deg, #2563eb, #0d6efd);
+      color: #fff;
+      padding: 15px 20px;
+      font-weight: 500;
+    }
+
+    #chat-box {
+      flex: 1;
+      overflow-y: auto;
+      padding: 25px;
+      background: #fafafa;
+      scroll-behavior: smooth;
+    }
+
+    .chat-message {
+      margin-bottom: 18px;
+      max-width: 70%;
+      padding: 25px 18px;
+      border-radius: 18px;
+      word-wrap: break-word;
+      position: relative;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .sent {
+      background-color: #0d6efd;
+      color: #fff;
+      margin-left: auto;
+      border-bottom-right-radius: 5px;
+    }
+
+    .received {
+      background-color: #e9ecef;
+      color: #212529;
+      margin-right: auto;
+      border-bottom-left-radius: 5px;
+    }
+
+    .status {
+      font-size: 0.75rem;
+      color: #dee2e6;
+      margin-left: 6px;
+      float: right;
+    }
+
+    .received .status {
+      display: none;
+    }
+
+    .input-area {
+      border-top: 1px solid #dee2e6;
+      padding: 15px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #messageInput {
+      resize: none;
+      border-radius: 25px;
+      padding: 12px 15px;
+      height: 45px;
+      width: 100%;
+    }
+
+    #sendBtn {
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #0d6efd;
+      color: #fff;
+      border: none;
+      transition: background 0.3s;
+    }
+
+    #sendBtn:hover {
+      background-color: #2563eb;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container py-4">
+    <div class="card shadow chat-card mx-auto col-lg-8 col-md-10">
+      <!-- Header -->
+      <div class="chat-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fa fa-user-circle me-2"></i> <%= otherUser.name %></h5>
+        <a href="<%= user.role === 'client' ? '/client/chats/' : '/chats/' %>" class="btn btn-light btn-sm"><i class="fa fa-arrow-left me-1"></i> Back</a>
+      </div>
+
+      <!-- Messages -->
+      <div id="chat-box">
+        <% messages.forEach(msg => { %>
+          <div class="chat-message <%= msg.senderId.equals(user._id) ? 'sent' : 'received' %>">
+            <p class="mb-1"><%= msg.message %></p>
+            <% if (msg.senderId.equals(user._id)) { %>
+              <span class="status">
+                <%= msg.status === 'sent' ? '✓' : msg.status === 'delivered' ? '✓✓' : '✓✓ Seen' %>
+              </span>
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
+
+      <!-- Input -->
+      <div class="input-area">
+        <textarea id="messageInput" class="form-control" rows="1" placeholder="Type a message..." maxlength="1000"></textarea>
+        <button id="sendBtn"><i class="fa fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const jobId = "<%= jobId %>";
+    const userId = "<%= user._id %>";
+    const otherUserId = "<%= otherUser._id %>";
+
+    const chatBox = document.getElementById("chat-box");
+    const input = document.getElementById("messageInput");
+    const sendBtn = document.getElementById("sendBtn");
+
+    // Join chat room
+    socket.emit("joinRoom", { jobId, userId });
+
+    // Auto-scroll
+    function scrollToBottom() {
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+    scrollToBottom();
+
+    // Send message
+    function sendMessage() {
+      const content = input.value.trim();
+      if (!content) return;
+
+      socket.emit("sendMessage", {
+        jobId,
+        senderId: userId,
+        receiverId: otherUserId,
+        message: content
+      });
+      input.value = "";
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+
+    // Send on Enter key
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    // Receive message
+    socket.on("receiveMessage", msg => {
+      const div = document.createElement("div");
+      div.className = `chat-message ${msg.senderId === userId ? 'sent' : 'received'}`;
+      div.innerHTML = `
+        <p class="mb-1">${msg.message}</p>
+        ${msg.senderId === userId ? `<span class="status">${msg.status === 'seen' ? '✓✓ Seen' : '✓✓'}</span>` : ''}
+      `;
+      chatBox.appendChild(div);
+      scrollToBottom();
+    });
+
+    // Mark messages seen
+    socket.emit("markSeen", { jobId, userId });
+
+    socket.on("messagesSeen", ({ userId: seenBy }) => {
+      if (seenBy === otherUserId) {
+        document.querySelectorAll('.sent .status').forEach(span => span.innerText = '✓✓ Seen');
+      }
+    });
+  </script>
+</body>
+</html>

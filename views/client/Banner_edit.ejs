@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('./layouts/header') %>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <%- include('./layouts/sidebar') %>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <%- include('./layouts/topbar') %>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                            <div class="container-fluid mb-4">
+
+                                <!-- Page Heading -->
+                                <h1 class="h3 mb-4 text-gray-800">Edit Banner</h1>
+
+                            </div>
+
+                            <div class="container-fluid">
+
+                                <form method="POST" action="/client/banner/edit/<%= banner._id %>" enctype="multipart/form-data">
+                                    <input type="text" name="title" value="<%= banner.title %>"
+                                        class="form-control mb-4" />
+                                    <textarea name="content"
+                                        class="form-control mb-4" rows="8"><%= banner.content %></textarea>
+                                    <% if (banner.image) { %>
+                                        <img src="<%= banner.image %>" width="100" />
+                                        <% } %>
+                                            <input type="file" name="image" class="form-control mb-4" />
+                                            <button type="submit" class="btn btn-primary mt-2">Update</button>
+                                </form>
+                            </div>
+                            <!-- End of Page Content -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <%- include('./layouts/footer') %>
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+
+</body>
+
+</html>

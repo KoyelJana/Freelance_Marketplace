@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('./layouts/header') %>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <%- include('./layouts/sidebar') %>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <%- include('./layouts/topbar') %>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Dashboard Stats -->
+<div class="row">
+
+  <!-- Total Jobs Posted -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <div>
+          <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+            Jobs Posted
+          </div>
+          <div class="h5 mb-0 font-weight-bold text-gray-800"><%= jobCounts?.total || 0 %></div>
+        </div>
+        <div class="col-auto">
+          <i class="fas fa-briefcase fa-2x text-primary"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Open Jobs -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <div>
+          <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+            Open Jobs
+          </div>
+          <div class="h5 mb-0 font-weight-bold text-gray-800"><%= jobCounts?.open || 0 %></div>
+        </div>
+        <div class="col-auto">
+          <i class="fas fa-folder-open fa-2x text-success"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- In Progress Jobs -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-warning shadow h-100 py-2">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <div>
+          <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+            In Progress
+          </div>
+          <div class="h5 mb-0 font-weight-bold text-gray-800"><%= jobCounts?.inProgress || 0 %></div>
+        </div>
+        <div class="col-auto">
+          <i class="fas fa-spinner fa-2x text-warning"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Completed Jobs -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-info shadow h-100 py-2">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <div>
+          <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+            Completed Jobs
+          </div>
+          <div class="h5 mb-0 font-weight-bold text-gray-800"><%= jobCounts?.completed || 0 %></div>
+        </div>
+        <div class="col-auto">
+          <i class="fas fa-check-circle fa-2x text-info"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Closed Jobs -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-dark shadow h-100 py-2">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <div>
+          <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+            Closed Jobs
+          </div>
+          <div class="h5 mb-0 font-weight-bold text-gray-800"><%= jobCounts?.closed || 0 %></div>
+        </div>
+        <div class="col-auto">
+          <i class="fas fa-lock fa-2x text-dark"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bids Pending -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-secondary shadow h-100 py-2">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <div>
+          <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+            Pending Bids
+          </div>
+          <div class="h5 mb-0 font-weight-bold text-gray-800"><%= bidCounts?.pending || 0 %></div>
+        </div>
+        <div class="col-auto">
+          <i class="fas fa-hourglass-half fa-2x text-secondary"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bids Accepted -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <div>
+          <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+            Accepted Bids
+          </div>
+          <div class="h5 mb-0 font-weight-bold text-gray-800"><%= bidCounts?.accepted || 0 %></div>
+        </div>
+        <div class="col-auto">
+          <i class="fas fa-thumbs-up fa-2x text-success"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bids Rejected -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-danger shadow h-100 py-2">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <div>
+          <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+            Rejected Bids
+          </div>
+          <div class="h5 mb-0 font-weight-bold text-gray-800"><%= bidCounts?.rejected || 0 %></div>
+        </div>
+        <div class="col-auto">
+          <i class="fas fa-times-circle fa-2x text-danger"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+  <!-- Job Status Chart -->
+  <div class="col-xl-6 col-lg-6">
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Job Status Overview</h6>
+      </div>
+      <div class="card-body">
+        <canvas id="jobStatusChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bid Status Chart -->
+  <div class="col-xl-6 col-lg-6">
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-success">Bid Status Overview</h6>
+      </div>
+      <div class="card-body">
+        <canvas id="bidStatusChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <%- include('./layouts/footer') %>
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <script>
+  // JOB STATUS PIE CHART
+  const ctxJobs = document.getElementById('jobStatusChart').getContext('2d');
+  new Chart(ctxJobs, {
+    type: 'pie',
+    data: {
+      labels: ['Open', 'In Progress', 'Completed', 'Closed'],
+      datasets: [{
+        data: [
+          "<%= jobCounts?.open || 0 %>", 
+          "<%= jobCounts?.inProgress || 0 %>", 
+          "<%= jobCounts?.completed || 0 %>", 
+          "<%= jobCounts?.closed || 0 %>"
+        ],
+        backgroundColor: ['#36a2eb', '#ffce56', '#4bc0c0', '#ff6384'],
+        hoverOffset: 10
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+
+  // BID STATUS BAR CHART
+  const ctxBids = document.getElementById('bidStatusChart').getContext('2d');
+  new Chart(ctxBids, {
+    type: 'bar',
+    data: {
+      labels: ['Pending', 'Accepted', 'Rejected'],
+      datasets: [{
+        label: 'Bids',
+        data: [
+          "<%= bidCounts?.pending || 0 %>", 
+          "<%= bidCounts?.accepted || 0 %>", 
+          "<%= bidCounts?.rejected || 0 %>"
+        ],
+        backgroundColor: ['#6c757d', '#28a745', '#dc3545']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { stepSize: 1 }
+        }
+      }
+    }
+  });
+</script>
+
+
+</body>
+
+</html>

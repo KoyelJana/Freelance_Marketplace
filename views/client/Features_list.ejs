@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('./layouts/header') %>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <%- include('./layouts/sidebar') %>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <%- include('./layouts/topbar') %>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                            <div class="container-fluid mb-4">
+
+                                <!-- Page Heading -->
+                                <h1 class="h3 mb-4 text-gray-800">All Features</h1>
+                                <a href="/client/features/add" class="btn btn-success mb-3">Add New Feature</a>
+
+                            </div>
+
+                            <div class="container-fluid mt-4">
+                                <div class="row g-4">
+        <% if (features.length === 0) { %>
+            <div class="col-12">
+                <div class="alert alert-warning">No features found.</div>
+            </div>
+        <% } %>
+
+        <% features.forEach(feature => { %>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title"><%= feature.title %></h5>
+                        <p class="card-text flex-grow-1"><%= feature.content %></p>
+                        <div class="mt-3 d-flex justify-content-between">
+                            <a href="/client/features/edit/<%= feature._id %>" class="btn btn-primary btn-sm">Edit</a>
+                            <form action="/client/features/delete/<%= feature._id %>" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+                            </div>
+
+                            <!-- End of Page Content -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <%- include('./layouts/footer') %>
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light bg-transparent fixed-top" id="gtco-main-nav">
+        <div class="container">
+                <ul class="navbar-head mr-auto"></ul>
+                <a class="navbar-brand">WorkNestly</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#my-nav"
+                        aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                </button>
+                </ul>
+
+                <div id="my-nav" class="collapse navbar-collapse">
+                        <ul class="navbar-nav mr-auto">
+                                <% if (user) { %>
+                                        <li class="nav-item <%= activePage === 'home' ? 'active' : '' %>">
+                                                <a class="nav-link" href="/">Home</a>
+                                        </li>
+                                        <li class="nav-item <%= activePage === 'about' ? 'active' : '' %>">
+                                                <a class="nav-link" href="/about">About</a>
+                                        </li>
+                                        <li class="nav-item <%= activePage === 'features' ? 'active' : '' %>">
+                                                <a class="nav-link" href="/features">Feature</a>
+                                        </li>
+                                        <li class="nav-item <%= activePage === 'jobBoard' ? 'active' : '' %>">
+                                                <a class="nav-link" href="/job_board">Job Board</a>
+                                        </li>
+                                        <li class="nav-item <%= activePage === 'contact' ? 'active' : '' %>">
+                                                <a class="nav-link" href="/contact">Contact</a>
+                                        </li>
+                                        <% } else { %>
+                                                <li class="nav-item mx-1 <%= activePage === 'home' ? 'active' : '' %>">
+                                                        <a class="nav-link" href="/">Home</a>
+                                                </li>
+                                                <li class="nav-item <%= activePage === 'about' ? 'active' : '' %>">
+                                                        <a class="nav-link" href="/about">About</a>
+                                                </li>
+                                                <li class="nav-item <%= activePage === 'features' ? 'active' : '' %>">
+                                                        <a class="nav-link" href="/features">Feature</a>
+                                                </li>
+                                                <li
+                                                        class="nav-item mx-1 <%= activePage === 'jobBoard' ? 'active' : '' %>">
+                                                        <a class="nav-link" href="/job_board">Job Board</a>
+                                                </li>
+                                                <li
+                                                        class="nav-item mx-1 <%= activePage === 'contact' ? 'active' : '' %>">
+                                                        <a class="nav-link" href="/contact">Contact</a>
+                                                </li>
+                                                <% } %>
+                        </ul>
+
+                        <% if (user) { %>
+                                <form class="form-inline my-2 my-lg-0">
+                                        <!-- <a href="/dashboard"
+                                                class="btn btn-info my-2 my-sm-0 mr-3 text-uppercase">Dashboard</a> -->
+                                        <a href="/dashboard"
+                                                class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">
+                                                Welcome <%= user.name %>
+                                        </a>
+                                        <a href="/logout" class="btn btn-info my-2 my-sm-0 text-uppercase">Logout</a>
+                                </form>
+                                <% } else { %>
+                                        <form class="d-flex flex-row justify-content-between">
+                                                <a href="/login"
+                                                        class="btn btn-outline-dark my-2 my-sm-0 mr-3 text-uppercase">Login</a>
+                                                <a href="/register"
+                                                        class="btn btn-info my-2 my-sm-0 text-uppercase">Sign Up</a>
+                                        </form>
+                                        <% } %>
+                </div>
+        </div>
+</nav>
+
+<!-- Bootstrap 5 JS (must include at bottom of body) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,0 +1,50 @@
+<!doctype html>
+<!--
+	Solution by GetTemplates.co
+	URL: https://gettemplates.co
+-->
+<html lang="en">
+
+<%-include('./layouts/header')%>
+
+    <body>
+        <%-include('./layouts/navber')%>
+            <div class="container contact-section">
+  <div class="row">
+    <!-- Contact Info -->
+    <div class="col-lg-6 contact-info">
+        <% if (message && message.length > 0) { %>
+                            <div class="alert alert-info"><%= message %></div>
+                        <% } %>
+      <h4>Get in Touch</h4>
+      <p><i class="fa fa-map-marker-alt"></i> WorkNestly HQ, Kolkata, India</p>
+      <p><i class="fa fa-envelope"></i> support@worknestly.com</p>
+      <p><i class="fa fa-phone"></i> +91 98765 43210</p>
+
+      <h4 class="mt-4">Follow Us</h4>
+      <a href="#"><i class="fa fa-facebook fa-2x me-3"></i></a>
+      <a href="#"><i class="fa fa-twitter fa-2x me-3"></i></a>
+      <a href="#"><i class="fa fa-linkedin fa-2x me-3"></i></a>
+      <a href="#"><i class="fa fa-instagram fa-2x"></i></a>
+    </div>
+    <!-- Contact Form -->
+    <div class="col-lg-6" id="contact">
+      <h4>Contact Us</h4>
+      <form action="/contact/create" method="POST">
+        <input type="text" name="name" class="form-control" placeholder="Full Name" required>
+        <input type="email" name="email" class="form-control" placeholder="Email Address" required>
+        <textarea name="message" class="form-control" placeholder="Message" rows="5" required></textarea>
+        <button type="submit" class="submit-button">
+          SEND MESSAGE <i class="fa fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+
+    
+  </div>
+</div>
+
+    <%-include('./layouts/footer')%>
+    </body>
+
+</html>

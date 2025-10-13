@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<%- include('./layouts/header') %>
+
+<body class="bg-light">
+  <%- include('./layouts/navber') %>
+
+  <div class="container py-5">
+
+    <!-- Profile Header -->
+    <div class="row align-items-center mb-5 text-center text-md-start g-4">
+      <!-- Freelancer Picture -->
+      <div class="col-12 col-md-2 text-center">
+        <img src="<%= freelancer.avatar %>" 
+             alt="Freelancer Picture"
+             class="rounded-circle border border-3 shadow-sm img-fluid"
+             style="width: 100px; height: 100px; object-fit: cover;">
+      </div>
+
+      <!-- Freelancer Info -->
+      <div class="col-12 col-md-7">
+        <h4 class="fw-bold mb-1"><%= freelancer.name %></h4>
+        <p class="mb-2" style="color: brown;">
+          <i class="fa fa-envelope me-2"></i> <%= freelancer.email %>
+        </p>
+        <p class="mb-0"  style="color: brown;">
+          <i class="fa fa-tools me-2"></i>
+          <% 
+            let skillsText = "No skills added";
+            if (freelancer.skills) {
+              try {
+                const parsed = JSON.parse(freelancer.skills);
+                if (Array.isArray(parsed)) skillsText = parsed.join(", ");
+                else skillsText = parsed.toString();
+              } catch (err) {
+                if (Array.isArray(freelancer.skills)) skillsText = freelancer.skills.join(", ");
+                else skillsText = freelancer.skills.toString();
+              }
+            }
+          %>
+          <%= skillsText %>
+        </p>
+      </div>
+
+      <!-- Buttons -->
+      <div class="col-12 col-md-3 d-flex flex-column align-items-md-end align-items-center" style="gap:10px;">
+        <a href="/edit/<%= freelancer._id %>" class="btn btn-warning text-uppercase w-100">
+          <i class="fa fa-user-edit me-1"></i> Update Profile
+        </a>
+        <a href="/chats" class="btn text-uppercase w-100" style="background-color:brown; color:white;">
+          <i class="fa fa-comments me-1"></i> Chat
+        </a>
+      </div>
+    </div>
+
+    <!-- Flash Message -->
+    <% if (message && message.length > 0) { %>
+      <div class="alert alert-info alert-dismissible fade show shadow-sm" role="alert">
+        <%= message %>
+      </div>
+    <% } %>
+
+    <!-- Dashboard Stats -->
+    <div class="row mb-5 g-4 text-center">
+      <div class="col-12 col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+          <div class="card-body">
+            <h6 class="text-muted">Bids Placed</h6>
+            <h1 class="fw-bold text-primary"><%= bids.length %></h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+          <div class="card-body">
+            <h6 style="color: brown;">Active Jobs</h6>
+            <h1 class="fw-bold text-success"><%= activeJobs.length %></h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+          <div class="card-body">
+            <h6 class="text-secondary">Completed Jobs</h6>
+            <h1 class="fw-bold text-dark"><%= completedJobs.length %></h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Your Bids Section -->
+    <div class="card border-0 shadow-lg rounded-4">
+      <div class="card-header bg-info text-white py-3 rounded-top-4">
+        <h5 class="mb-0"><i class="fa fa-briefcase me-2"></i>Your Bids</h5>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Job Title</th>
+                <th>Amount</th>
+                <th>Delivery (days)</th>
+                <th>Bid Status</th>
+                <th>Job Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (bids.length > 0) { %>
+                <% bids.forEach(bid => { %>
+                  <tr>
+                    <td><%= bid.job ? bid.job.title : "Deleted Job" %></td>
+                    <td class="text-primary">$<%= bid.amount %></td>
+                    <td><%= bid.deliveryDays %></td>
+                    <td>
+                      <span class="badge rounded-pill 
+                        <%= bid.status === 'accepted' ? 'bg-success' :
+                            bid.status === 'rejected' ? 'bg-danger' : 
+                            'bg-warning text-dark' %>">
+                        <%= bid.status %>
+                      </span>
+                    </td>
+                    <td>
+                      <span class="badge rounded-pill 
+                        <%= bid.job && bid.job.status === 'completed' ? 'bg-secondary' :
+                            bid.job && bid.job.status === 'in_progress' ? 'bg-info text-dark' :
+                            'bg-light text-dark' %>">
+                        <%= bid.job ? bid.job.status : "N/A" %>
+                      </span>
+                    </td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="5" class="text-center text-muted py-4">🚀 No bids found yet</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('./layouts/footer') %>
+</body>
+</html>

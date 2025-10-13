@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<%- include('./layouts/header') %>
+<body class="bg-light">
+<%- include('./layouts/navber') %>
+
+<div class="container py-5">
+
+  <!-- Page Header -->
+  <div class="mb-4">
+    <h2 class="fw-bold text-dark"><i class="fa fa-user-edit me-2"></i>Edit Freelancer Profile</h2>
+    <p class="text-muted">Update your profile information below</p>
+  </div>
+
+  <!-- Flash Message -->
+  <% if (message && message.length > 0) { %>
+    <div class="alert alert-info alert-dismissible fade show shadow-sm" role="alert">
+      <%= message %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% } %>
+
+  <!-- Edit Form Card -->
+  <div class="card shadow-lg rounded-3 border-0">
+    <div class="card-body p-5">
+
+      <form action="/update/<%= freelancer._id %>" method="POST" enctype="multipart/form-data">
+        
+        <!-- Profile Picture -->
+        <div class="d-flex align-items-center mb-4">
+          <div class="me-3">
+            <img id="avatarPreview" src="<%= freelancer.avatar %>" 
+                 alt="Profile Picture" 
+                 class="rounded-circle border border-2 shadow-sm" 
+                 width="100" height="100">
+          </div>
+          <div>
+            <label class="form-label fw-semibold">Change Profile Picture</label>
+            <input type="file" name="avatar" class="form-control" 
+                   onchange="document.getElementById('avatarPreview').src = window.URL.createObjectURL(this.files[0])">
+          </div>
+        </div>
+
+        <!-- Name -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Full Name</label>
+          <input type="text" name="name" class="form-control" value="<%= freelancer.name %>" required>
+        </div>
+
+        <!-- Phone -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Phone</label>
+          <input type="text" name="phone" class="form-control" value="<%= freelancer.phone %>">
+        </div>
+
+        <!-- Skills -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Skills</label>
+          <input type="text" name="skills" class="form-control" 
+                 value="<%= freelancer.skills.join(', ') %>" placeholder="Separate skills with commas">
+        </div>
+
+        <!-- Bio -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Bio</label>
+          <textarea name="bio" class="form-control" rows="4"><%= freelancer.bio %></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-end">
+          <button type="submit" class="btn btn-gradient px-4">
+            <i class="fa fa-save me-1"></i> Save Changes
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<%- include('./layouts/footer') %>
