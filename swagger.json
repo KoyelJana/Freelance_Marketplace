@@ -1,32 +1,124 @@
 {
     "swaggerDefinition": {
-      "info": {
-        "title": "Freelance Marketplace api",
-        "version": "1.0.0",
-        "description": "Freelance Marketplace API documentation create by webskitters",
-        "contact": {
-          "name": "webskitters"
+        "openapi": "3.0.0",
+        "info": {
+            "title": "Freelance Marketplace API",
+            "version": "1.0.0",
+            "description": "Freelance Marketplace API documentation created by Koyel",
+            "contact": {
+                "name": "Koyel"
+            }
         },
         "servers": [
-          "http://localhost:3005",
-          "https://ajax-node-mongodb-swagger-apidoc.onrender.com/api-docs"
-        ]  
-      },
-      "tags": [
-        {
-            "name": "Auth",
-            "description": "Auth API"
+            {
+                "url": "http://localhost:3005",
+                "description": "Local Server"
+            },
+            {
+                "url": "https://freelance-marketplace-ugss.onrender.com",
+                "description": "Production Server"
+            }
+        ],
+        "components": {
+            "securitySchemes": {
+                "bearerAuth": {
+                    "type": "http",
+                    "scheme": "bearer",
+                    "bearerFormat": "JWT",
+                    "description": "Enter your *Client* JWT token here to authorize client APIs"
+                },
+                "freelancerAuth": {
+                    "type": "http",
+                    "scheme": "bearer",
+                    "bearerFormat": "JWT",
+                    "description": "Enter your *Freelancer* JWT token here to authorize freelancer APIs"
+                }
+            },
+            "schemas": {
+                "Bid": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "type": "string",
+                            "example": "6710a32f5c3b2a1234567890"
+                        },
+                        "jobId": {
+                            "type": "string",
+                            "example": "670fef4b2a7d9123456789ab"
+                        },
+                        "freelancerId": {
+                            "type": "string",
+                            "example": "6709cdd5f45b9123456789ff"
+                        },
+                        "freelancerName": {
+                            "type": "string",
+                            "example": "Koyel Jana"
+                        },
+                        "proposal": {
+                            "type": "string",
+                            "example": "I can deliver this project in 5 days."
+                        },
+                        "amount": {
+                            "type": "number",
+                            "example": 500
+                        },
+                        "deliveryDays": {
+                            "type": "integer",
+                            "example": 5
+                        },
+                        "status": {
+                            "type": "string",
+                            "enum": [
+                                "pending",
+                                "accepted",
+                                "rejected"
+                            ],
+                            "example": "pending"
+                        },
+                        "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2025-10-17T18:00:00Z"
+                        }
+                    }
+                }
+            }
         },
-        {
-            "name": "Frontend",
-            "description": "Frontend CRUD API"
-        }
-    ],
-    "schemes": "['https', 'http']"
-      
+        "tags": [
+            {
+                "name": "Auth",
+                "description": "Authentication API"
+            },
+            {
+                "name": "Client",
+                "description": "Client API"
+            },
+            {
+                "name": "Freelancer",
+                "description": "Freelancer API"
+            },
+            {
+                "name": "Bid",
+                "description": "Bid API"
+            },
+            {
+                "name": "Job",
+                "description": "Job API"
+            },
+            {
+                "name": "Frontend",
+                "description": "Frontend API"
+            }
+        ],
+        "schemes": [
+            "https",
+            "http"
+        ]
     },
     "apis": [
-      "app.js",
-      "./app/route/*.js"
+        "app.js",
+        "./app/route/api/*.js",
+        "./app/route/frontend/FrontendRouter.js",
+        "./app/route/client/*.js"
     ]
-  }
+}

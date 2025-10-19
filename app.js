@@ -12,6 +12,13 @@ const http = require('http');                  //add http
 const { Server } = require('socket.io');       //add socket.io
 const initSocket = require('./app/socket');    //socket.js
 
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const SwaggerOptions = require('./swagger.json');
+const swaggerDocument = swaggerJsDoc(SwaggerOptions);
+
+const cors = require('cors');
+
 const app = express();
 dbCon();
 
@@ -28,6 +35,7 @@ app.use(session({
     }
 }));
 
+
 app.use(cookieParser());
 
 app.set('view engine', 'ejs');
@@ -38,6 +46,11 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://localhost:3005'], // ✅ frontend & swagger origins
+  credentials: true, // ✅ allow cookies to be sent
+}));
 
 app.use(flash());
 
@@ -66,6 +79,39 @@ app.use('/jobs', JobRoute);
 
 const BidRoute = require('./app/route/frontend/BidRouter');
 app.use('/bids', BidRoute);
+
+//Api
+const FrontendApiRoute = require('./app/route/api/FrontendApiRouter');
+app.use('/api',FrontendApiRoute);
+
+const ClientApiRoute = require('./app/route/api/ClientApiRouter');
+app.use('/api/client',ClientApiRoute);
+
+const JobApiRoute = require('./app/route/api/JobApiRouter');
+app.use('/api/jobs',JobApiRoute);
+
+const FreelancerApiRoute=require('./app/route/api/FreelancerApiRouter');
+app.use('/api/freelancer',FreelancerApiRoute);
+
+const BidApiRoute = require('./app/route/api/BidApiRouter');
+app.use('/api/bids', BidApiRoute);
+
+//swagger
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, {
+    swaggerOptions: {
+      persistAuthorization: true, // keeps auth info when you refresh
+      requestInterceptor: (req) => {
+        req.credentials = 'include'; // ✅ this makes Swagger send cookies
+        return req;
+      },
+    },
+  })
+);
+
 
 // Setup HTTP server and Socket.io
 const port = 3005;
