@@ -499,7 +499,7 @@ class ClientController {
 
             const message = await Message.create({
                 jobId: job._id,
-                senderId: req.session.user._id,      // client
+                senderId: req.user._id,      // client
                 receiverId: bid.freelancerId,        // freelancer
                 message: messageContent,
                 status: "sent"
@@ -510,7 +510,7 @@ class ClientController {
             io.to(job._id.toString()).emit("receiveMessage", {
                 _id: message._id,
                 jobId: job._id,
-                senderId: req.session.user._id,
+                senderId: req.user._id,
                 receiverId: bid.freelancerId,
                 message: message.message,
                 status: "delivered",
@@ -524,7 +524,7 @@ class ClientController {
             req.flash("message", "Error accepting bid");
             res.redirect("/client/all_bids");
         }
-    }
+    } 
 
     // Reject a bid
     async rejectBid(req, res) {

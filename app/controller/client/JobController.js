@@ -99,7 +99,7 @@ class JobController {
         skills: skills.split(",").map(s => s.trim()),
         budget: Number(budget),
         deadline: new Date(deadline),
-        clientId: req.user._id,
+        clientId: req.user._id.toString(),
         image,
       });
 
